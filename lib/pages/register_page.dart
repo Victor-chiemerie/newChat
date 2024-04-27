@@ -1,5 +1,5 @@
+import 'package:chat/auth/auth_service.dart';
 import 'package:flutter/material.dart';
-
 import '../components/my_button.dart';
 import '../components/my_textfield.dart';
 
@@ -10,7 +10,35 @@ class Register extends StatelessWidget {
   final TextEditingController _conPwController = TextEditingController();
   Register({super.key, required this.onTap});
 
-  void register() {}
+  void register(BuildContext context) async {
+    // get auth service
+    final authService = AuthService();
+
+    // try register
+    if (_pwController.text == _conPwController.text) {
+      try {
+        await authService.createAccountWithEmailPassword(
+          _emailController.text,
+          _pwController.text,
+        );
+      } catch (e) {
+        // ignore: use_build_context_synchronously
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(e.toString()),
+          ),
+        );
+      }
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          title: Text("Passwords do not match"),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +99,7 @@ class Register extends StatelessWidget {
             // Login button
             MyButton(
               text: "Register",
-              onTap: register,
+              onTap: () => register(context),
             ),
 
             const SizedBox(height: 25),
