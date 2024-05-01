@@ -35,10 +35,10 @@ class _ChatPageState extends State<ChatPage> {
   final AuthService _authService = AuthService();
 
   // send message
-  void sendMessage(String text) async {
+  void sendMessage(types.PartialText message) async {
     // send message if the message is not empty
-    if (text.isNotEmpty) {
-      await _chatService.sendMessage(widget.receiverID, text);
+    if (message.text.isNotEmpty) {
+      await _chatService.sendMessage(widget.receiverID, message.text);
     }
   }
 
@@ -69,8 +69,9 @@ class _ChatPageState extends State<ChatPage> {
 
           // return chat list
           return Chat(
-            messages: snapshot.data!,
-            onSendPressed: (text) => sendMessage(text as String),
+            // messages: snapshot.data!,
+            messages: [],
+            onSendPressed: (text) => sendMessage(text),
             user: _user,
           );
         },
