@@ -1,7 +1,9 @@
-import 'package:chat/modulus/message.dart';
+import 'package:chat/modulus/message.dart' as ChatMessage;
 import 'package:chat/services/auth/auth_service.dart';
 import 'package:chat/services/chat/chat_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
@@ -67,10 +69,18 @@ class _ChatPageState extends State<ChatPage> {
             return const Text("Loading...");
           }
 
+          List<types.Message> _messages = [];
+
+          for (var doc in snapshot.data!.docs) {
+            Map<String, dynamic> data =
+                doc.data() as Map<String, dynamic>; // Get message data
+
+            print('****** ${data['message']} ******');
+          }
+
           // return chat list
           return Chat(
-            // messages: snapshot.data!,
-            messages: [],
+            messages: _messages,
             onSendPressed: (text) => sendMessage(text),
             user: _user,
           );
