@@ -1,28 +1,81 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
-class Message {
-  final String senderID;
+class Message extends types.Message {
   final String senderEmail;
   final String receiverID;
   final String message;
-  final Timestamp timestamp;
 
-  Message({
-    required this.senderID,
-    required this.senderEmail,
+  const Message({
+    required super.author, // sender ID
+    super.createdAt, // Time it was sent
+    required super.id,
+    required super.type,
+    super.updatedAt,
+    required this.message, // Message
     required this.receiverID,
-    required this.message,
-    required this.timestamp,
+    required this.senderEmail,
   });
 
-  // convert to a map
-  Map<String, dynamic> toMap() {
+  @override
+  types.Message copyWith({
+    types.User? author,
+    int? createdAt,
+    String? id,
+    Map<String, dynamic>? metadata,
+    String? remoteId,
+    types.Message? repliedMessage,
+    String? roomId,
+    bool? showStatus,
+    types.Status? status,
+    int? updatedAt,
+  }) {
+    return Message(
+      author: author ?? this.author,
+      id: id ?? this.id,
+      receiverID: receiverID,
+      senderEmail: senderEmail,
+      message: message,
+      type: type,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  List<Object?> get props => [id];
+
+  @override
+  Map<String, dynamic> toJson() {
     return {
-      "senderID": senderEmail,
-      "senderEmail": senderEmail,
+      "author": author.toJson(),
+      "createdAt": createdAt,
+      "id": id,
+      "updatedAt": updatedAt,
       "receiverID": receiverID,
+      "senderEmail": senderEmail,
       "message": message,
-      "timestamp": timestamp,
+      "type": type,
     };
+  }
+
+  @override
+
+  /// Creates a particular message from a map (decoded JSON).
+  /// Type is determined by the `type` field.
+  factory Message.fromJson(Map<String, dynamic> json) {
+    final type = types.MessageType.values.firstWhere(
+      (e) => e.name == json['type'],
+      orElse: () => types.MessageType.unsupported,
+    );
+
+    return Message(
+      author: types.User.fromJson(json['author']),
+      id: json['id'],
+      type: type,
+      message: json['message'],
+      createdAt: json['createdAt'],
+      receiverID: json['receiverID'],
+      senderEmail: json['senderEmail'],
+    );
   }
 }
