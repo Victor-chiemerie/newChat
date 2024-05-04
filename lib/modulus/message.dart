@@ -1,8 +1,6 @@
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class Message extends types.Message {
-  final String senderEmail;
-  final String receiverID;
   final String message;
 
   const Message({
@@ -10,10 +8,9 @@ class Message extends types.Message {
     super.createdAt, // Time it was sent
     required super.id,
     required super.type,
+    super.repliedMessage,
     super.updatedAt,
     required this.message, // Message
-    required this.receiverID,
-    required this.senderEmail,
   });
 
   @override
@@ -32,9 +29,8 @@ class Message extends types.Message {
     return Message(
       author: author ?? this.author,
       id: id ?? this.id,
-      receiverID: receiverID,
-      senderEmail: senderEmail,
       message: message,
+      repliedMessage: repliedMessage,
       type: type,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -51,9 +47,8 @@ class Message extends types.Message {
       "createdAt": createdAt,
       "id": id,
       "updatedAt": updatedAt,
-      "receiverID": receiverID,
-      "senderEmail": senderEmail,
       "message": message,
+      "repliedMessage": repliedMessage,
       "type": type,
     };
   }
@@ -74,8 +69,6 @@ class Message extends types.Message {
       type: type,
       message: json['message'],
       createdAt: json['createdAt'],
-      receiverID: json['receiverID'],
-      senderEmail: json['senderEmail'],
     );
   }
 }

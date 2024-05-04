@@ -59,8 +59,6 @@ class ChatService {
       {
         "author": user.toJson(),
         "id": uuid.v4(),
-        "senderEmail": currentUserEmail,
-        "receiverID": receiverID,
         "message": message,
         "createdAt": DateTime.now().millisecondsSinceEpoch,
       },

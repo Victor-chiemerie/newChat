@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:chat/modulus/message.dart' as ChatMessage;
 import 'package:chat/services/auth/auth_service.dart';
 import 'package:chat/services/chat/chat_service.dart';
@@ -79,6 +77,9 @@ class _ChatPageState extends State<ChatPage> {
 
             _messages.add(newMessage);
           }
+
+          print(_messages.first.createdAt);
+          print(_messages.first.author);
 
           // return chat list
           return Chat(
