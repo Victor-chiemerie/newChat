@@ -38,12 +38,21 @@ class ChatService {
     // Message newMessage = Message(
     //   author: user,
     //   id: uuid.v4(),
-    //   senderEmail: currentUserEmail,
-    //   receiverID: receiverID,
+    //   // senderEmail: currentUserEmail,
+    //   // receiverID: receiverID,
     //   message: message,
     //   createdAt: DateTime.now().millisecondsSinceEpoch,
     //   type: types.MessageType.text,
     // );
+    types.Message newMessage = types.TextMessage(
+      author: user,
+      id: uuid.v4(),
+      // senderEmail: currentUserEmail,
+      // receiverID: receiverID,
+      text: message,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+      type: types.MessageType.text,
+    );
 
     // construct chat room ID for the two users (sorted to ensure uniqueness)
     List<String> ids = [currentUserID, receiverID];
@@ -56,12 +65,13 @@ class ChatService {
         .doc(chatRoomID)
         .collection("messages")
         .add(
-      {
-        "author": user.toJson(),
-        "id": uuid.v4(),
-        "message": message,
-        "createdAt": DateTime.now().millisecondsSinceEpoch,
-      },
+          newMessage.toJson()
+      // {
+      //   "author": user.toJson(),
+      //   "id": uuid.v4(),
+      //   "message": message,
+      //   "createdAt": DateTime.now().millisecondsSinceEpoch,
+      // },
     );
   }
 

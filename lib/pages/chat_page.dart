@@ -67,23 +67,24 @@ class _ChatPageState extends State<ChatPage> {
             return const Center(child: Text("Loading..."));
           }
 
+          print('data ${snapshot.data?.docs}');
+
           List<types.Message> _messages = [];
 
           for (var doc in snapshot.data!.docs) {
             Map<String, dynamic> data =
                 doc.data() as Map<String, dynamic>; // Get message data
 
-            final newMessage = ChatMessage.Message.fromJson(data);
+            final newMessage = types.Message.fromJson(data);
+
+            print(newMessage);
 
             _messages.add(newMessage);
           }
 
-          print(_messages.first.createdAt);
-          print(_messages.first.author);
-
           // return chat list
           return Chat(
-            messages: _messages,
+            messages: _messages.reversed.toList(),
             onSendPressed: (text) => sendMessage(text),
             user: _user,
           );
