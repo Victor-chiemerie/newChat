@@ -1,4 +1,3 @@
-import 'package:chat/modulus/message.dart' as ChatMessage;
 import 'package:chat/services/auth/auth_service.dart';
 import 'package:chat/services/chat/chat_service.dart';
 import 'package:flutter/material.dart';
@@ -67,8 +66,6 @@ class _ChatPageState extends State<ChatPage> {
             return const Center(child: Text("Loading..."));
           }
 
-          print('data ${snapshot.data?.docs}');
-
           List<types.Message> _messages = [];
 
           for (var doc in snapshot.data!.docs) {
@@ -77,14 +74,13 @@ class _ChatPageState extends State<ChatPage> {
 
             final newMessage = types.Message.fromJson(data);
 
-            print(newMessage);
-
             _messages.add(newMessage);
           }
 
           // return chat list
           return Chat(
-            messages: _messages.reversed.toList(),
+            // messages: _messages.reversed.toList(),
+            messages: _messages,
             onSendPressed: (text) => sendMessage(text),
             user: _user,
           );

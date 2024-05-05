@@ -1,4 +1,3 @@
-import 'package:chat/modulus/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -28,27 +27,14 @@ class ChatService {
   Future<void> sendMessage(String receiverID, message) async {
     // get current user info
     final String currentUserID = _auth.currentUser!.uid;
-    final String currentUserEmail = _auth.currentUser!.email!;
     final user = types.User(
       id: currentUserID,
     );
-    // final String messageType = types.MessageType.text.toString();
 
     // create a new message
-    // Message newMessage = Message(
-    //   author: user,
-    //   id: uuid.v4(),
-    //   // senderEmail: currentUserEmail,
-    //   // receiverID: receiverID,
-    //   message: message,
-    //   createdAt: DateTime.now().millisecondsSinceEpoch,
-    //   type: types.MessageType.text,
-    // );
     types.Message newMessage = types.TextMessage(
       author: user,
       id: uuid.v4(),
-      // senderEmail: currentUserEmail,
-      // receiverID: receiverID,
       text: message,
       createdAt: DateTime.now().millisecondsSinceEpoch,
       type: types.MessageType.text,
@@ -64,15 +50,7 @@ class ChatService {
         .collection("chat_rooms")
         .doc(chatRoomID)
         .collection("messages")
-        .add(
-          newMessage.toJson()
-      // {
-      //   "author": user.toJson(),
-      //   "id": uuid.v4(),
-      //   "message": message,
-      //   "createdAt": DateTime.now().millisecondsSinceEpoch,
-      // },
-    );
+        .add(newMessage.toJson());
   }
 
   // receive message
@@ -87,7 +65,7 @@ class ChatService {
         .collection("chat_rooms")
         .doc(chatRoomID)
         .collection("messages")
-        .orderBy("createdAt", descending: false)
+        .orderBy("createdAt", descending: true)
         .snapshots();
   }
 }
