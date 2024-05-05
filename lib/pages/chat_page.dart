@@ -1,8 +1,11 @@
 import 'package:chat/services/auth/auth_service.dart';
 import 'package:chat/services/chat/chat_service.dart';
+import 'package:chat/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+
+import '../components/my_icon.dart';
 
 class ChatPage extends StatefulWidget {
   final String receiverEmail;
@@ -66,6 +69,78 @@ class _ChatPageState extends State<ChatPage> {
             return const Center(child: Text("Loading..."));
           }
 
+          final MyChatTheme _theme = MyChatTheme(
+            attachmentButtonIcon: const Icon(Icons.attachment_rounded),
+            attachmentButtonMargin: const EdgeInsets.all(3),
+            backgroundColor: Colors.black,
+            dateDividerMargin: const EdgeInsets.all(3),
+            dateDividerTextStyle: const TextStyle(),
+            deliveredIcon: const Icon(Icons.mark_chat_read_rounded),
+            documentIcon: const Icon(Icons.edit_document),
+            emptyChatPlaceholderTextStyle: const TextStyle(),
+            errorColor: Colors.red,
+            errorIcon: null,
+            inputBackgroundColor: Colors.white,
+            inputSurfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+            inputElevation: 0,
+            inputBorderRadius: BorderRadius.circular(5),
+            inputMargin: const EdgeInsets.all(3),
+            inputPadding: const EdgeInsets.all(3),
+            inputTextColor: Colors.black,
+            inputTextDecoration: const InputDecoration(),
+            inputTextStyle: const TextStyle(),
+            messageBorderRadius: 5,
+            messageInsetsHorizontal: 5,
+            messageInsetsVertical: 5,
+            messageMaxWidth: 100,
+            primaryColor: Colors.green,
+            receivedEmojiMessageTextStyle: const TextStyle(),
+            receivedMessageBodyTextStyle: const TextStyle(),
+            receivedMessageCaptionTextStyle: const TextStyle(),
+            receivedMessageDocumentIconColor: Colors.brown,
+            receivedMessageLinkDescriptionTextStyle: const TextStyle(),
+            receivedMessageLinkTitleTextStyle: const TextStyle(),
+            secondaryColor: Theme.of(context).colorScheme.secondary,
+            seenIcon: const Icon(Icons.remove_red_eye),
+            sendButtonIcon: const RoundIconButton(
+              backgroundColor: Colors.green,
+              iconData: Icons.arrow_upward_sharp,
+            ),
+            sendButtonMargin: const EdgeInsets.all(3),
+            sendingIcon: const Icon(
+              Icons.send_and_archive_outlined,
+            ),
+            sentEmojiMessageTextStyle: const TextStyle(),
+            sentMessageBodyTextStyle: const TextStyle(),
+            sentMessageCaptionTextStyle: const TextStyle(),
+            sentMessageDocumentIconColor: Colors.brown,
+            sentMessageLinkDescriptionTextStyle: const TextStyle(),
+            sentMessageLinkTitleTextStyle: const TextStyle(),
+            statusIconPadding: const EdgeInsets.all(3),
+            systemMessageTheme: const SystemMessageTheme(
+              margin: EdgeInsets.all(3),
+              textStyle: TextStyle(),
+            ),
+            typingIndicatorTheme: TypingIndicatorTheme(
+              animatedCirclesColor: Colors.brown,
+              animatedCircleSize: 5,
+              bubbleBorder: BorderRadius.circular(5),
+              bubbleColor: Colors.brown,
+              countAvatarColor: Colors.brown,
+              countTextColor: Colors.brown,
+              multipleUserTextStyle: const TextStyle(),
+            ),
+            unreadHeaderTheme: const UnreadHeaderTheme(
+              color: Colors.brown,
+              textStyle: TextStyle(),
+            ),
+            userAvatarImageBackgroundColor:
+                Theme.of(context).colorScheme.background,
+            userAvatarNameColors: Colors.primaries,
+            userAvatarTextStyle: const TextStyle(),
+            userNameTextStyle: const TextStyle(),
+          );
+
           List<types.Message> _messages = [];
 
           for (var doc in snapshot.data!.docs) {
@@ -83,6 +158,7 @@ class _ChatPageState extends State<ChatPage> {
             messages: _messages,
             onSendPressed: (text) => sendMessage(text),
             user: _user,
+            theme: _theme,
           );
         },
       ),

@@ -67,8 +67,8 @@ class Message extends types.Message {
     );
   }
 
-  @override
-  String toString() {
-    return 'Message(author: $author, createdAt: $createdAt, id: $id, type: $type, repliedMessage: $repliedMessage, updatedAt: $updatedAt,)';
-  }
+  // @override
+  // String toString() {
+  //   return 'Message(author: $author, createdAt: $createdAt, id: $id, type: $type, repliedMessage: $repliedMessage, updatedAt: $updatedAt,)';
+  // }
 }
