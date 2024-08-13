@@ -31,12 +31,12 @@ class HomePage extends StatelessWidget {
       builder: (context, snapshot) {
         // error
         if (snapshot.hasError) {
-          return const Text("Error");
+          return const Center(child: Text("Error"));
         }
 
         // loading...
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("Loading...");
+          return const Center(child: Text("Loading..."));
         }
 
         // return list view

@@ -1,6 +1,9 @@
-import 'package:chat/modulus/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:uuid/uuid.dart';
+
+const uuid = Uuid();
 
 class ChatService {
   // get instance of fireStore
@@ -24,16 +27,17 @@ class ChatService {
   Future<void> sendMessage(String receiverID, message) async {
     // get current user info
     final String currentUserID = _auth.currentUser!.uid;
-    final String currentUserEmail = _auth.currentUser!.email!;
-    final Timestamp timestamp = Timestamp.now();
+    final user = types.User(
+      id: currentUserID,
+    );
 
     // create a new message
-    Message newMessage = Message(
-      senderID: currentUserID,
-      senderEmail: currentUserEmail,
-      receiverID: receiverID,
-      message: message,
-      timestamp: timestamp,
+    types.Message newMessage = types.TextMessage(
+      author: user,
+      id: uuid.v4(),
+      text: message,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+      type: types.MessageType.text,
     );
 
     // construct chat room ID for the two users (sorted to ensure uniqueness)
@@ -46,7 +50,7 @@ class ChatService {
         .collection("chat_rooms")
         .doc(chatRoomID)
         .collection("messages")
-        .add(newMessage.toMap());
+        .add(newMessage.toJson());
   }
 
   // receive message
@@ -61,7 +65,7 @@ class ChatService {
         .collection("chat_rooms")
         .doc(chatRoomID)
         .collection("messages")
-        .orderBy("timestamp", descending: false)
+        .orderBy("createdAt", descending: true)
         .snapshots();
   }
 }
