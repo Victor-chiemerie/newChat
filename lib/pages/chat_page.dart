@@ -158,7 +158,7 @@ class _ChatPageState extends State<ChatPage> {
             messages: _messages,
             onSendPressed: (text) => sendMessage(text),
             user: _user,
-            theme: _theme,
+            // theme: _theme,
           );
         },
       ),
